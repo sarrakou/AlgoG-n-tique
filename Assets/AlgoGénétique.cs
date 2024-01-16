@@ -19,6 +19,7 @@ public class AlgoGénétique : MonoBehaviour
     private Vector3[] points;
     private BitArray[] ADN;
     private Vector3[] parents = new Vector3[2];
+    private string[] children = new string[2];
     [SerializeField]private GameObject BonHommePrefab;
     
     string outputString = "";
@@ -50,6 +51,18 @@ public class AlgoGénétique : MonoBehaviour
             Recombinaison();
             Mutation();
         } */
+    }
+
+    string[] Mutation(string parent1, string parent2)
+    {
+        int randomPlacement = Random.Range(0, parent1.Length);
+        string child1 = parent1.Substring(0, randomPlacement) + parent2.Substring(randomPlacement, parent2.Length-randomPlacement);
+        string child2 = parent2.Substring(0, randomPlacement) + parent1.Substring(randomPlacement, parent1.Length-randomPlacement);
+        
+        children[0] = child1;
+        children[1] = child2;
+
+        return children;
     }
 
     void InitialisationPopulation()
