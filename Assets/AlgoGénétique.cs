@@ -12,6 +12,8 @@ TODO :
     - Mutation - SARRA
     - Evaluer et supprimer les plus faibles - RUTH
 */
+
+/*apres la suppression des 2 plus nuls il faut ^supprimer tous les instances et mes faire respawn a partir du tableau point*/
 public class AlgoGénétique : MonoBehaviour
 {
     private int NumGenerations=0;
@@ -50,6 +52,8 @@ public class AlgoGénétique : MonoBehaviour
             Recombinaison();
             Mutation();
         } */
+
+
     }
 
     void InitialisationPopulation()
@@ -74,6 +78,23 @@ public class AlgoGénétique : MonoBehaviour
                 Instantiate(BonHommePrefab, points[i], transform.rotation);
             }
              
+        }
+    }
+    
+    //test
+   public void test()
+    {
+        print("avant");
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            print((Vector3)points[i]);
+        }
+        supppLesDeuxPlusNuls();
+        print("apres");
+        for(int i = 0; i < points.Length; i++)
+        {
+            print((Vector3)points[i]);
         }
     }
 
@@ -104,4 +125,48 @@ public class AlgoGénétique : MonoBehaviour
         print(ConvertirEnBits(new Vector3(9,10,3)));
         return parents;
     }
+
+    
+    //selection de la plus nul 
+    int SelectionnerLePlusNul()
+    {
+        Vector3 le_plus_bas = points[0];
+        int id = 0;
+
+        for (int i = 1; i < points.Length; i++)
+        {
+            if (points[i].y < le_plus_bas.y)
+            {
+                le_plus_bas = points[i];
+                id = i;
+            }
+        }
+        return id;
+
+    }
+     //methode pour supprimer les 2 plus nuls
+    void supppLesDeuxPlusNuls()
+    {
+        RemoveAt(ref points, SelectionnerLePlusNul());
+        RemoveAt(ref points, SelectionnerLePlusNul());
+        NumPoints -= 2;
+    }
+
+    //methode pour suprimer un element d'un tableau 
+    static void RemoveAt<T>(ref T[] arr, int index)
+    {
+        for (int a = index; a < arr.Length - 1; a++)
+        {
+
+            arr[a] = arr[a + 1];
+        }
+        Array.Resize(ref arr, arr.Length - 1);
+    }
+
+
+
+
+
+
+
 }
