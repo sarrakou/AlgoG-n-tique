@@ -4,6 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/*
+TODO : 
+    - Convert float to binary - ELODIE
+    - Convery binary to float - ELODIE
+    - Recombinaison (crossover) - ADRIANA
+    - Mutation - SARRA
+    - Evaluer et supprimer les plus faibles - RUTH
+*/
 public class AlgoGénétique : MonoBehaviour
 {
     private int NumGenerations=0;
@@ -41,7 +49,6 @@ public class AlgoGénétique : MonoBehaviour
             
             Recombinaison();
             Mutation();
-            CalculFitness();
         } */
     }
 
