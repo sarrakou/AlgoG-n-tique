@@ -53,7 +53,7 @@ public class AlgoGénétique : MonoBehaviour
         } */
     }
 
-    string[] Mutation(string parent1, string parent2)
+    string[] CrossOver(string parent1, string parent2)
     {
         int randomPlacement = Random.Range(0, parent1.Length);
         string child1 = parent1.Substring(0, randomPlacement) + parent2.Substring(randomPlacement, parent2.Length-randomPlacement);
