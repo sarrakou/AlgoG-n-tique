@@ -1,0 +1,100 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class AlgoGénétique : MonoBehaviour
+{
+    private int NumGenerations=0;
+    public int NumPoints=10;
+    private Vector3[] points;
+    private BitArray[] ADN;
+    private Vector3[] parents = new Vector3[2];
+    [SerializeField]private GameObject BonHommePrefab;
+    
+    string outputString = "";
+
+    string ConvertirEnBits(Vector3 inputVector)
+    {
+        outputString += BitConverter.ToString(BitConverter.GetBytes(inputVector.x));
+        outputString += BitConverter.ToString(BitConverter.GetBytes(inputVector.y));
+        outputString += BitConverter.ToString(BitConverter.GetBytes(inputVector.z));
+      return outputString;  
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        points = new Vector3[NumPoints];
+        InitialisationPopulation();
+        CalculFitness();
+        SelectionnerParents();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+       /*  while()
+        {
+            NumGenerations++;
+            
+            Recombinaison();
+            Mutation();
+            CalculFitness();
+        } */
+    }
+
+    void InitialisationPopulation()
+    {
+        for (int i=0; i< NumPoints; i++ )
+        {
+            points[i] = new Vector3(Random.Range(-282, 47), 90, Random.Range(-281, 50));
+        }
+    }
+
+    void CalculFitness()
+    {
+        int GroundlayerMask = 6;
+
+        for (int i=0; i< NumPoints; i++ )
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(points[i], Vector3.down, out hit, Mathf.Infinity))
+            {
+                points[i] = hit.point;
+                Instantiate(BonHommePrefab, points[i], transform.rotation);
+            }
+             
+        }
+    }
+
+    Vector3[] SelectionnerParents()
+    {
+        Vector3 joueur1 = new Vector3(0,0,0);
+        Vector3 joueur2 = new Vector3(0,0,0);
+        Vector3 joueur3 = new Vector3(0,0,0);
+
+        for (int i=0 ; i<2; i++)
+        {
+            joueur1 = points[Random.Range(0, NumPoints)];
+            joueur2 = points[Random.Range(0, NumPoints)];
+            joueur3 = points[Random.Range(0, NumPoints)];
+            
+            if (joueur1 == joueur2)
+            {
+                joueur2 = points[Random.Range(0, NumPoints)];
+            }
+            if (joueur3==joueur1 || joueur3 ==joueur2)
+            {
+                joueur3 = points[Random.Range(0, NumPoints)];
+            }
+
+            float parentY = Mathf.Max(joueur1.y, joueur2.y, joueur3.y );
+        }
+        
+        print(ConvertirEnBits(new Vector3(9,10,3)));
+        return parents;
+    }
+}
