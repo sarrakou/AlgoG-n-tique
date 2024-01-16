@@ -53,7 +53,7 @@ public class AlgoGénétique : MonoBehaviour
         } */
     }
 
-    string[] CrossOver(string parent1, string parent2)
+/*     string[] CrossOver(string parent1, string parent2)
     {
         int randomPlacement = Random.Range(0, parent1.Length);
         string child1 = parent1.Substring(0, randomPlacement) + parent2.Substring(randomPlacement, parent2.Length-randomPlacement);
@@ -63,6 +63,21 @@ public class AlgoGénétique : MonoBehaviour
         children[1] = child2;
 
         return children;
+    } */
+
+    string Mutation(string ADN)
+    {
+        int randomIndex = Random.Range(0, ADN.Length);
+        string newADN;
+        if (ADN[randomIndex]==0)
+        {
+            newADN = ADN.Substring(0,randomIndex-1)+'1' + ADN.Substring(randomIndex-1, ADN.Length-randomIndex-1);
+        } else 
+        {
+            newADN = ADN.Substring(0,randomIndex-1)+'0' + ADN.Substring(randomIndex-1, ADN.Length-randomIndex-1);
+        }
+
+        return newADN;
     }
 
     void InitialisationPopulation()
