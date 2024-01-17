@@ -72,7 +72,7 @@ public class AlgoGénétique : MonoBehaviour
 
     IEnumerator Generation()
     {
-        while(NumGenerations<NumPoints)
+        while(NumGenerations<20)
         {
             NumGenerations++;
             NumGenerationTxt.text = "Génération n° "+NumGenerations;
