@@ -37,7 +37,14 @@ public class AlgoGénétique : MonoBehaviour
         return BitConverter.ToSingle(BitConverter.GetBytes(intValue), 0);
     }
 
-    
+    public void setPoints(int nbPoints)
+    {
+        NumPoints = nbPoints; 
+    }
+    public void setGeneration(int nbGene)
+    {
+        NumberOfGenerations = nbGene; 
+    }
     string ConvertToBit(Vector3 inputVector)
     {
         int xInt = FloatToInt(inputVector.x);
