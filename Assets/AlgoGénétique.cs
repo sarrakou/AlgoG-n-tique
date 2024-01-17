@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using TMPro;
 
 /*
 TODO : 
@@ -21,6 +22,7 @@ public class AlgoGénétique : MonoBehaviour
     private Vector3[] parents = new Vector3[2];
     private string[] children = new string[2];
     [SerializeField]private GameObject BonHommePrefab;
+    [SerializeField]private TMP_Text NumGenerationTxt;
     
     string outputString = "";
     
@@ -68,6 +70,7 @@ public class AlgoGénétique : MonoBehaviour
         while(NumGenerations<10)
         {
             NumGenerations++;
+            NumGenerationTxt.text = "Génération n° "+NumGenerations;
             InitialisationPopulation();
             CalculFitness();
             print(NumPoints);
