@@ -17,6 +17,7 @@ public class AlgoGénétique : MonoBehaviour
 {
     private int NumGenerations=0;
     public int NumPoints=20;
+    public int NumberOfGenerations =20;
     private List<Vector3> points = new List<Vector3>();
     private BitArray[] ADN;
     private Vector3[] parents = new Vector3[2];
@@ -72,7 +73,7 @@ public class AlgoGénétique : MonoBehaviour
 
     IEnumerator Generation()
     {
-        while(NumGenerations<20)
+        while(NumGenerations<NumberOfGenerations)
         {
             NumGenerations++;
             NumGenerationTxt.text = "Génération n° "+NumGenerations;
