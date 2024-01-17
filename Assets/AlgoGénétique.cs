@@ -68,6 +68,8 @@ public class AlgoGénétique : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        InitialisationPopulation();
         StartCoroutine(Generation());
     }
 
@@ -75,12 +77,11 @@ public class AlgoGénétique : MonoBehaviour
     {
         while(NumGenerations<NumberOfGenerations)
         {
+            ClearOldGeneration();
             NumGenerations++;
             NumGenerationTxt.text = "Génération n° "+NumGenerations;
-            ClearOldGeneration();
-            InitialisationPopulation();
+
             CalculFitness();
-            
             parents = SelectionnerParents();
             children = CrossOver(ConvertToBit(parents[0]), ConvertToBit(parents[1]));
             Mutation(children[0]);
@@ -88,7 +89,9 @@ public class AlgoGénétique : MonoBehaviour
             Mutation(children[1]);
             points.Add(ConvertToFloat(children[1]));
             supppLesDeuxPlusNuls();
+
             yield return new WaitForSeconds(1f);
+
         }
     }
 
@@ -112,10 +115,10 @@ public class AlgoGénétique : MonoBehaviour
         string newADN;
         if (ADN[randomIndex]==0)
         {
-            newADN = ADN.Substring(0,randomIndex-1)+'1' + ADN.Substring(randomIndex-1, ADN.Length-randomIndex-1);
+            newADN = ADN.Substring(0,randomIndex)+'1' + ADN.Substring(randomIndex, ADN.Length-randomIndex);
         } else 
         {
-            newADN = ADN.Substring(0,randomIndex-1)+'0' + ADN.Substring(randomIndex-1, ADN.Length-randomIndex-1);
+            newADN = ADN.Substring(0,randomIndex)+'0' + ADN.Substring(randomIndex, ADN.Length-randomIndex);
         }
 
         return newADN;
@@ -135,13 +138,10 @@ public class AlgoGénétique : MonoBehaviour
         foreach (var gameObj in GameObject.FindGameObjectsWithTag("bonhomme")){
             Destroy(gameObj);
         }
-        points.Clear();
         
     }
     void CalculFitness()
     {
-        int GroundlayerMask = 6;
-
         for (int i=0; i< points.Count; i++ )
         {
             RaycastHit hit;
@@ -149,6 +149,10 @@ public class AlgoGénétique : MonoBehaviour
             if (Physics.Raycast(points[i], Vector3.down, out hit, Mathf.Infinity))
             {
                 points[i] = hit.point;
+                GameObject newBonHomme = Instantiate(BonHommePrefab, points[i], transform.rotation);
+                newBonHomme.tag = "bonhomme";
+            } else
+            {
                 GameObject newBonHomme = Instantiate(BonHommePrefab, points[i], transform.rotation);
                 newBonHomme.tag = "bonhomme";
             }
@@ -207,7 +211,7 @@ public class AlgoGénétique : MonoBehaviour
                 le_plus_bas = points[i];
                 id = i;
             }
-        }
+        } 
         return id;
 
     }
