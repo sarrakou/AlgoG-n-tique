@@ -89,10 +89,15 @@ public class AlgoGénétique : MonoBehaviour
             Mutation(children[1]);
             points.Add(ConvertToFloat(children[1]));
             supppLesDeuxPlusNuls();
-
+            
+           
             yield return new WaitForSeconds(1f);
-
+            //print(points.Count);
         }
+        string tagBonhomme = "bonhomme"; 
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tagBonhomme);
+        int numberOfObjectsWithTag = objectsWithTag.Length;
+        Debug.Log("Le nombre de bonhomme présent : "+ numberOfObjectsWithTag);
     }
 
 
@@ -203,14 +208,25 @@ public class AlgoGénétique : MonoBehaviour
     {
         Vector3 le_plus_bas = points[0];
         int id = 0;
-
+        
+        
         for (int i = 1; i < points.Count; i++)
         {
-            if (points[i].y < le_plus_bas.y)
+            //Si il appartient à la zone, on fait la recherche de celui qui est le plus bas
+            if (points[i].x > -282 && points[i].x < 47 && points[i].z > -281 && points[i].z < 50)
             {
-                le_plus_bas = points[i];
-                id = i;
+                if (points[i].y < le_plus_bas.y)
+                {
+                    le_plus_bas = points[i];
+                    id = i;
+                }
             }
+            //Si il n'appartient pas à la zone, c'est le plus nul alors on le supprime
+            else
+            {
+                id = i; 
+            }
+            
         } 
         return id;
 
