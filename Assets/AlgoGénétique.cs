@@ -67,13 +67,19 @@ public class AlgoGénétique : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(Generation());
+    }
+
+    IEnumerator Generation()
+    {
         while(NumGenerations<10)
         {
             NumGenerations++;
             NumGenerationTxt.text = "Génération n° "+NumGenerations;
+            ClearOldGeneration();
             InitialisationPopulation();
             CalculFitness();
-            print(NumPoints);
+            
             parents = SelectionnerParents();
             children = CrossOver(ConvertToBit(parents[0]), ConvertToBit(parents[1]));
             Mutation(children[0]);
@@ -81,10 +87,8 @@ public class AlgoGénétique : MonoBehaviour
             Mutation(children[1]);
             points.Add(ConvertToFloat(children[1]));
             supppLesDeuxPlusNuls();
-            print(NumPoints);
-            NumPoints +=2;
-            print(NumPoints);
-        } 
+            yield return new WaitForSeconds(2f);
+        }
     }
 
 
@@ -120,22 +124,32 @@ public class AlgoGénétique : MonoBehaviour
     {
         for (int i=0; i< NumPoints; i++ )
         {
-            points[i] = new Vector3(Random.Range(-282, 47), 90, Random.Range(-281, 50));
+            points.Add(new Vector3(Random.Range(-282, 47), 90, Random.Range(-281, 50)));
         }
     }
 
+    void ClearOldGeneration()
+    {
+        // Destroy the LevelBlock
+        foreach (var gameObj in GameObject.FindGameObjectsWithTag("bonhomme")){
+            Destroy(gameObj);
+        }
+        points.Clear();
+        
+    }
     void CalculFitness()
     {
         int GroundlayerMask = 6;
 
-        for (int i=0; i< NumPoints; i++ )
+        for (int i=0; i< points.Count; i++ )
         {
             RaycastHit hit;
 
             if (Physics.Raycast(points[i], Vector3.down, out hit, Mathf.Infinity))
             {
                 points[i] = hit.point;
-                Instantiate(BonHommePrefab, points[i], transform.rotation);
+                GameObject newBonHomme = Instantiate(BonHommePrefab, points[i], transform.rotation);
+                newBonHomme.tag = "bonhomme";
             }
              
         }
@@ -143,24 +157,24 @@ public class AlgoGénétique : MonoBehaviour
 
     Vector3[] SelectionnerParents()
     {
-        Vector3 joueur1 = new Vector3(0,0,0);
-        Vector3 joueur2 = new Vector3(0,0,0);
-        Vector3 joueur3 = new Vector3(0,0,0);
+        Vector3 joueur1 = new Vector3();
+        Vector3 joueur2 = new Vector3();
+        Vector3 joueur3 = new Vector3();
         Vector3[] p = new Vector3[2];
 
         for (int i=0; i<2; i++)
         {
-            joueur1 = points[Random.Range(0, NumPoints)];
-            joueur2 = points[Random.Range(0, NumPoints)];
-            joueur3 = points[Random.Range(0, NumPoints)];
+            joueur1 = points[Random.Range(0, points.Count)];
+            joueur2 = points[Random.Range(0, points.Count)];
+            joueur3 = points[Random.Range(0, points.Count)];
             
             if (joueur1 == joueur2)
             {
-                joueur2 = points[Random.Range(0, NumPoints)];
+                joueur2 = points[Random.Range(0, points.Count)];
             }
             if (joueur3==joueur1 || joueur3 ==joueur2)
             {
-                joueur3 = points[Random.Range(0, NumPoints)];
+                joueur3 = points[Random.Range(0, points.Count)];
             }
 
             float parentY = Mathf.Max(joueur1.y, joueur2.y, joueur3.y);
@@ -201,7 +215,6 @@ public class AlgoGénétique : MonoBehaviour
     {
         points.RemoveAt(SelectionnerLePlusNul());
         points.RemoveAt(SelectionnerLePlusNul());
-        NumPoints -= 2;
     }
 
     //methode pour suprimer un element d'un tableau 

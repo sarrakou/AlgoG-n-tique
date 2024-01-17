@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 312970754309944183}
   - component: {fileID: 3744811996159540434}
   - component: {fileID: 1449255154881988632}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BONHOMME
-  m_TagString: Untagged
+  m_TagString: bonhomme
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
